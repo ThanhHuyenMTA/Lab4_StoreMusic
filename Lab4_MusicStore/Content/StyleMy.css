@@ -10,3 +10,7 @@ label{
 h2{
      font-weight:bold;
 }
+#hopthoai{
+    display:none; width:34%;margin-left:25%;border:1px solid #808080;text-align:center;position: absolute;top:162px;z-index:9999;
+    background-color:#efe1e1;
+}

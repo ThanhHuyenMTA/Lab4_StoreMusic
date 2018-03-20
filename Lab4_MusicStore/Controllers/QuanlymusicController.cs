@@ -37,7 +37,9 @@ namespace Lab4_MusicStore.Controllers
         [HttpPost]
         public ActionResult AddAlbum(Album album, FormCollection Fields)
         {
-            if (Fields["sumbmitSave"] == "sumbmitSave")
+            string a = Fields["submitSave"];
+            string b = Fields["submitCancel"];
+            if (a == "submitSave")
             {
                 if (ModelState.IsValid)
                 {
@@ -54,8 +56,9 @@ namespace Lab4_MusicStore.Controllers
                 }
                 return View(album);
             }
-            if (Fields["sumbmitCancal"] == "sumbmitCancel")
+            if (b == "submitCancel")
                  return RedirectToAction("Danhsachnhac");
+                  
             else return View(album);
         }
         [HttpGet]
@@ -83,21 +86,41 @@ namespace Lab4_MusicStore.Controllers
         [HttpPost]
         public ActionResult EditAlbum(Album album,FormCollection fm)
         {
-            if (ModelState.IsValid)
+            string a = fm["submitSave"];
+            string b = fm["submitCancel"];
+            if (a == "submitSave")
             {
-                //lấy tên Genre va Artist từ form
-                string genreN = fm["genreN"];
-                string artistN = fm["artistN"];
-                Genre G = db.Genres.SingleOrDefault(n => n.GenreName == genreN);
-                Artist A = db.Artists.SingleOrDefault(n => n.ArtistName == artistN);
-                album.AlbumID = (int)Session["album_id"];
-                album.Artist_ID = A.ArtistID;
-                album.Genre_ID = G.GenreID;
-                db.Entry(album).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Danhsachnhac");
+                if (ModelState.IsValid)
+                {
+                    //lấy tên Genre va Artist từ form
+                    string genreN = fm["genreN"];
+                    string artistN = fm["artistN"];
+                    Genre G = db.Genres.SingleOrDefault(n => n.GenreName == genreN);
+                    Artist A = db.Artists.SingleOrDefault(n => n.ArtistName == artistN);
+                    album.AlbumID = (int)Session["album_id"];
+                    album.Artist_ID = A.ArtistID;
+                    album.Genre_ID = G.GenreID;
+                    db.Entry(album).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Danhsachnhac");
+                }
             }
-            return View(album);
+            if(b=="submitCancel")
+                return RedirectToAction("Danhsachnhac");
+            else return View(album);
+        }
+        [HttpPost]
+        public ActionResult DeleteAlbum(int album_id,FormCollection fm)
+        {
+            string OK = fm["OK"];
+            string NO = fm["NO"];
+            if(OK=="OK")
+            {
+                Album al = db.Albums.Find(album_id);
+                db.Albums.Remove(al);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Danhsachnhac");
         }
         [HttpGet]
         public JsonResult SelectAlbum(int id)

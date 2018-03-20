@@ -3,49 +3,69 @@
     ViewBag.Title = "Danhsachnhac";
     Layout = "~/Views/Shares/_Layout.cshtml";
 }
-
-<h2>Danh sách kho nhạc <span style="color:red;font-weight:bold;">@ViewBag.coutAlbum</span></h2><hr />
-<div>
-    <form class="form-group" method="post" action="@Url.Action("SearchAlbum","Quanlymusic")">
-        <input  type="text" id="Title" name="Title" class="form-control" style="width:40%;float:left;"/>
-        <button class="btn btn-primary btn-block" type="submit" style="width:5%;margin-left:40.6%;height:32px;">Search</button>
-    </form>
-</div>
-<h4><a class="fa fa-plus-square" href="@Url.Action("AddAlbum", "Quanlymusic")"> Add Album</a></h4>
-<div class="container">
-    <table class="table table-bordered" id="table_album">
-        <thead>
-            <tr class="success">  
-                <th></th>
-                <th>AlbumID</th>
-                <th>Genre_ID</th>
-                <th>Artist_ID</th>
-                <th>Title</th>
-                <th>Price</th>
-                <th colspan="3">Chức năng</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td><a href="#" onclick="Select(@item.AlbumID)">Select</a></td>
-                    <td>@item.AlbumID</td>
-                    <td>@item.Genre_ID</td>
-                    <td>@item.Artist_ID</td>
-                    <td>@item.Title</td>
-                    <td>@item.Price</td>
-                    <td class="info"><a href="@Url.Action("EditAlbum", "Quanlymusic", new {@album_id =@item.AlbumID})">Edit</a></td>
-                    <td class="info"><a href="@Url.Action("DeleteAlbum", "Quanlymusic", new {@album_id =@item.AlbumID})">Delete</a></td>
-                    <td class="danger"> <a href="@Url.Action("DetailAlbum", "Quanlymusic", new {@album_id =@item.AlbumID})">Detail</a></td>
+<div id="ListAlbum">
+    <h2>Danh sách kho nhạc <span style="color:red;font-weight:bold;">@ViewBag.coutAlbum</span></h2><hr />
+    <div>
+        <form class="form-group" method="post" action="@Url.Action("SearchAlbum","Quanlymusic")">
+            <input type="text" id="Title" name="Title" class="form-control" style="width:40%;float:left;" />
+            <button class="btn btn-primary btn-block" type="submit" style="width:5%;margin-left:40.6%;height:32px;">Search</button>
+        </form>
+    </div>
+    <h4><a class="fa fa-plus-square" href="@Url.Action("AddAlbum", "Quanlymusic")"> Add Album</a></h4>
+    <div class="container">
+        <table class="table table-bordered" id="table_album">
+            <thead>
+                <tr class="success">
+                    <th></th>
+                    <th>AlbumID</th>
+                    <th>Genre_ID</th>
+                    <th>Artist_ID</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th colspan="3">Chức năng</th>
                 </tr>
-            }
-            
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><a href="#" onclick="Select(@item.AlbumID)">Select</a></td>
+                        <td>@item.AlbumID</td>
+                        <td>@item.Genre_ID</td>
+                        <td>@item.Artist_ID</td>
+                        <td>@item.Title</td>
+                        <td>@item.Price</td>
+                        <td class="info"><a href="@Url.Action("EditAlbum", "Quanlymusic", new {@album_id =@item.AlbumID})">Edit</a></td>
+                        <td class="info"><a onclick="delete_confirm(@item.AlbumID)" href="#">Delete</a></td>
+                        <td class="danger"> <a href="@Url.Action("DetailAlbum", "Quanlymusic", new {@album_id =@item.AlbumID})">Detail</a></td>
+                        
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="hopthoai">
+    <br />
+    <h3>Bạn có thực sự muốn xóa không?</h3><br /><br /><br />
+    <form method="post" action="@Url.Action("DeleteAlbumYN","Quanlyhocsinh")">
+        <button name="OK" value="OK" type="submit" style="width:20%;"> OK </button>
+        <button name="NO" value="NO" style="margin-left:10%;width:20%;" type="submit"> NO </button>
+    </form> 
+    <br /><br />
+    <br />
 </div>
 
 <script type="text/javascript">
+    function delete_confirm(id)
+    {
+        $("#hopthoai").css("display", "block");
+        $("#ListAlbum").hide();
+        $("form").attr("action","/Quanlymusic/DeleteAlbum?album_id="+id);
+    }
     function Select(id_album)
     {
         //debugger;
@@ -53,7 +73,7 @@
             type: "GET",
             url: "/Quanlymusic/SelectAlbum",
             data: { id: id_album },
-            dataType:"json",           
+            dataType:"json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 console.log(data);
