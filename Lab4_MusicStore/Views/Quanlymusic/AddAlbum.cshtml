@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "AddAlbum";
+    Layout = "~/Views/Shares/_Layout.cshtml";
+}
+<h2>Add Album</h2><hr />
+<form class="form-group" method="post">
+    <label for="Genre_ID">Genre</label>
+    <select class="form-control" name="genreN">
+        <option>Select Genre</option>
+        @foreach (var item in ViewBag.listGenre)
+        {
+            <option value=@item>@item</option>
+        }
+
+    </select>
+    <label for="Artist_ID">Artist</label>
+    <select class="form-control" name="artistN">
+        <option>Select Artist</option>
+        @foreach (var item in ViewBag.listArtist)
+        {
+            <option value=@item>@item</option>
+        }
+    </select>
+    <label for="Title">Title</label>
+    <input type="text" name="Title" class="form-control" />
+    <label for="Price">Price</label>
+    <input type="number" name="Price" class="form-control" /><br />
+    <button type="submit" value="sumbmitSave" name="sumbmitSave" class="btn btn-primary btn-block" style="width:50%;float:left;">Save album</button><br />
+    <button type="submit" value="sumbmitCancel" name="sumbmitCancel" class="btn btn-primary btn-block" style="width: 49%;margin-top: -1.7%;margin-left: 51%;">Cancel</button>
+</form>
+

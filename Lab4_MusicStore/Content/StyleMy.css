@@ -1,0 +1,12 @@
+﻿hr{
+    border:1px solid #808080;
+}
+#table_album th{
+    text-align:center;
+}
+label{
+    font-weight:bold;
+}
+h2{
+     font-weight:bold;
+}
